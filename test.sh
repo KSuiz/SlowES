@@ -3,19 +3,22 @@ set -e
 
 make
 
-for i in 1 2
+for mode in cbc ecb
 do
-    for k in 128 192 256
+    for i in 1 2
     do
-        echo [$i][$k] Encrypting...
-        ./aes -e -i tests/test$i.in -o tests/test$i.$k.eout -k$k tests/key$k
-        echo [$i][$k] Decrypting...
-        ./aes -d -i tests/test$i.$k.eout -o tests/test$i.$k.dout -k$k tests/key$k
-        if cmp -s tests/test$i.$k.dout tests/test$i.in
-        then
-            rm tests/test$i.$k.eout tests/test$i.$k.dout
-        else
-            echo "  [$i][$k] Failed"
-        fi
+        for k in 128 192 256
+        do
+            echo [$mode][$i][$k] Encrypting...
+            ./aes -e -$mode -i tests/test$i.in -o tests/test$i.$mode.$k.eout -k$k tests/key$k
+            echo [$mode][$i][$k] Decrypting...
+            ./aes -d -$mode -i tests/test$i.$mode.$k.eout -o tests/test$i.$mode.$k.dout -k$k tests/key$k
+            if cmp -s tests/test$i.$mode.$k.dout tests/test$i.in
+            then
+                rm tests/test$i.$mode.$k.eout tests/test$i.$mode.$k.dout
+            else
+                echo "  [$mode][$i][$k] Failed"
+            fi
+        done
     done
 done

@@ -52,7 +52,7 @@ static uint32_t keyWreck(uint32_t block, uint32_t *conn) {
     uint32_t result = 0;
     for (size_t i = 0; i < 32; i += 8)
         result |= subBox[(block & (0xFF << i)) >> i] << i;
-    result ^ *conn;
+    result ^= *conn;
     if (*conn >= 0x80)
         *conn = (*conn << 1) ^ 0x80;
     else

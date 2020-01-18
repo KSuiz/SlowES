@@ -3,6 +3,8 @@
 
 void encryptCBC(FILE *, FILE *, uint8_t *, size_t);
 void decryptCBC(FILE *, FILE *, uint8_t *, size_t);
+void encryptECB(FILE *, FILE *, uint8_t *, size_t);
+void decryptECB(FILE *, FILE *, uint8_t *, size_t);
 
 typedef enum {
     ENC_M = 0,
@@ -10,12 +12,8 @@ typedef enum {
 } emode_t;
 
 typedef enum {
-    CBC_M = 0
+    CBC_M = 0,
+    ECB_M = 1
 } rmode_t;
-
-static void (*cipherFuncs[2][1])(FILE *, FILE *, uint8_t *, size_t) = {
-    {encryptCBC},
-    {decryptCBC}
-};
 
 #endif

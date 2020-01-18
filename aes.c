@@ -10,6 +10,11 @@
 static void usage(char *);
 static void readKey(uint32_t *, size_t, char *);
 
+static void (*cipherFuncs[2][2])(FILE *, FILE *, uint8_t *, size_t) = {
+    {encryptCBC, encryptECB},
+    {decryptCBC, decryptECB}
+};
+
 int main(int argc, char **argv) {
     if (argc < 7)
         usage(argv[0]);
@@ -32,6 +37,8 @@ int main(int argc, char **argv) {
             output = argv[++i];
         else if (!strcmp(argv[i], "-cbc"))
             mode = CBC_M;
+        else if (!strcmp(argv[i], "-ecb"))
+            mode = ECB_M;
         else if (!strncmp(argv[i], "-k", 2)) {
             size_t val = atoi(argv[i] + 2);
             if (val == 128 || val == 192 || val == 256) {
